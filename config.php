@@ -2,7 +2,7 @@
     class db {
         public $conn;
         public $localhost = "localhost";
-        public $username = "username";
+        public $username = "root";
         public $password = "";
         public $database = "oop_first";
 
@@ -16,10 +16,10 @@
         public function __construct(){
             parent::__construct();
         }
-        public function indertdata($table,$query){
+        public function insertdata($table,$query){
             $this->conn->query("INSERT INTO $table $query");
         }
-        public function calldata($table,$query){
+        public function calldata($table){
             $data = $this->conn->query("SELECT * FROM $table");
             return $data; 
         }
@@ -39,4 +39,5 @@
     }
 
 
+    $crud = new crud();
 ?>

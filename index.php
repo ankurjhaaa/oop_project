@@ -11,16 +11,16 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="#">BrandName</a>
+        <a class="navbar-brand fw-bold" href="index.php">BrandName</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <form class="d-flex mx-auto" style="width: 40%;">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
+            <form class="d-flex mx-auto" style="width: 40%;" method="get">
+                <input class="form-control me-2" name="input_search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-primary" name="go" type="submit">Search</button>
             </form>
 
            
@@ -63,7 +63,10 @@
         </form>
         <?php
             if(isset($_POST['submit'])){
-                
+                $name = $_POST['name'];
+                $number = $_POST['number'];
+                $crud->insertdata("oop","(name,number) VALUES ('$name','$number')");
+                $crud->redirect("index.php");
             }
         ?>
     </div>
@@ -74,23 +77,35 @@
         <table class="table table-bordered table-striped mt-3">
             <thead class="table-dark">
                 <tr>
-                    <th>#</th>
+                    <th>id</th>
                     <th>Full Name</th>
                     <th>Phone Number</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="userTableBody">
-                <tr>
-                    <td>1</td>
-                    <td>Rahul Sharma</td>
-                    <td>9876543210</td>
+                <?php
+                    if(isset($_GET['go'])){
+                        $input_search = $_GET['input_search'];
+                        $data = $crud->searchdata("oop","name LIKE '%$input_search%'");
+                    }else{
+                        $data = $crud->calldata("oop");
+                    }
+                    while($row = mysqli_fetch_array($data)){ ?>
+                    <tr>
+                    <td><?= $row['id'] ?></td>
+                    <td><?= $row['name'] ?></td>
+                    <td><?= $row['number'] ?></td>
                     <td>
-                        <button class="btn btn-warning btn-sm" onclick="editRow(this)">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteRow(this)">Delete</button>
+                        <a class="btn btn-warning btn-sm" href="?edit=<?= $row['id'] ?>" >Edit</a>
+                        <a class="btn btn-danger btn-sm" href="?delete=<?= $row['id'] ?>" >Delete</a>
                     </td>
                 </tr>
-                <tr>
+
+
+                    <?php }?>
+                
+                <!-- <tr>
                     <td>2</td>
                     <td>Amit Verma</td>
                     <td>9123456789</td>
@@ -107,8 +122,8 @@
                         <button class="btn btn-warning btn-sm" onclick="editRow(this)">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteRow(this)">Delete</button>
                     </td>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- <tr>
                     <td>4</td>
                     <td>Neha Gupta</td>
                     <td>9988776655</td>
@@ -116,7 +131,7 @@
                         <button class="btn btn-warning btn-sm" onclick="editRow(this)">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteRow(this)">Delete</button>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
@@ -125,3 +140,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<?php
+    if(isset($_GET['delete'])){
+        $id = $_GET['delete'];
+        $crud->deletedata("oop","$id");
+        $crud->redirect("index.php");
+    }
+?>
