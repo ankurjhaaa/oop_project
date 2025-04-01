@@ -1,3 +1,6 @@
+<?php include_once "config.php"; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,17 +25,26 @@
 <body>
     <div class="login-box">
         <h3 class="text-center text-primary">Login</h3>
-        <form>
+        <form method="post">
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Enter your password" required>
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
         </form>
+        <?php
+        if(isset($_POST['login'])){
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $query = $crud->login("login","$email ,$password");
+        }
+
+        ?>
         <a href="signup.php">creat an account</a>
     </div>
 </body>

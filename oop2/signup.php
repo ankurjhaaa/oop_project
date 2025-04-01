@@ -1,3 +1,4 @@
+<?php include_once "config.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,21 +23,30 @@
 <body>
     <div class="signup-box">
         <h3 class="text-center text-primary">Signup</h3>
-        <form>
+        <form method="post">
             <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" class="form-control" placeholder="Enter your name" required>
+                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Enter your password" required>
+                <input type="password" name="pass" class="form-control" placeholder="Enter your password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Signup</button>
+            <button type="submit" name="signup" class="btn btn-primary w-100">Signup</button>
         </form>
+        <?php
+            if(isset($_POST['signup'])){
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $password = $_POST['pass'];
+                $crud->signup("login","(name,email,password) VALUE ('$name','$email','$password')");
+                $crud->redirect("login.php");
+            }
+        ?>
         <a href="login.php">already have account</a>
     </div>
 </body>

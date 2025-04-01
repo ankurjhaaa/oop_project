@@ -60,10 +60,10 @@ class db
 
 class crud extends db
 {
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
+    public function __construct()
+    {
+        parent::__construct();
+    }
     public function insertdata($table, $query)
     {
         $this->conn->query("INSERT INTO $table $query");
@@ -89,6 +89,15 @@ class crud extends db
     public function message($message)
     {
         echo "<script>alert('$message')</script>";
+    }
+
+    public function signup($table,$query)
+    {
+        $this->conn->query("INSERT INTO $table $query");
+    }
+
+    public function login($table,$email,$password){
+        $this->conn->query("SELECT * FROM $table WHERE email = '$email' AND password = '$password'");
     }
 }
 
